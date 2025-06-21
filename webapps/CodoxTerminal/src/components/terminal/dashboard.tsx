@@ -354,15 +354,11 @@ export function Dashboard({ activeView = 'main', onViewChange }: DashboardProps)
   }
 
   const renderMainDashboard = () => (
-    <div className="grid grid-cols-12 gap-3 h-full overflow-auto">
+    <div className="grid grid-cols-12 gap-3 h-full overflow-auto" style={{ gridTemplateRows: 'repeat(13, minmax(0, 1fr))' }}>
       {dashboardLayout.map((widget) => (
         <div
           key={widget.id}
-          className={`
-            col-span-${widget.position.w} 
-            row-span-${widget.position.h}
-            relative
-          `}
+          className="relative"
           style={{
             gridColumnStart: widget.position.x + 1,
             gridRowStart: widget.position.y + 1,
