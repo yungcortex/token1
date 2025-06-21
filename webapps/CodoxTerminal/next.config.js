@@ -3,6 +3,8 @@ const nextConfig = {
   output: 'export',
   trailingSlash: true,
   distDir: 'out',
+  basePath: '/CodoxTerminal',
+  assetPrefix: '/CodoxTerminal/',
   images: {
     unoptimized: true,
     domains: ['assets.coingecko.com', 'coin-images.coingecko.com'],
@@ -10,9 +12,6 @@ const nextConfig = {
   env: {
     CUSTOM_KEY: process.env.CUSTOM_KEY || 'default_value',
   },
-  // Remove basePath and assetPrefix for now to test if that's causing issues
-  // basePath: process.env.NODE_ENV === 'production' ? '/CodoxTerminal' : '',
-  // assetPrefix: process.env.NODE_ENV === 'production' ? '/CodoxTerminal/' : '',
   experimental: {
     esmExternals: false,
   },
