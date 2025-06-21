@@ -21,10 +21,16 @@ interface AdvancedCandlestickChartProps {
 }
 
 export function AdvancedCandlestickChart({ symbol, timeframe, height = 400 }: AdvancedCandlestickChartProps) {
+  const [isMounted, setIsMounted] = useState(false)
   const chartContainerRef = useRef<HTMLDivElement>(null)
   const chartRef = useRef<IChartApi | null>(null)
   const candlestickSeriesRef = useRef<ISeriesApi<'Candlestick'> | null>(null)
   const volumeSeriesRef = useRef<ISeriesApi<'Histogram'> | null>(null)
+
+  // Ensure component only renders on client side
+  useEffect(() => {
+    setIsMounted(true)
+  }, [])
 
   // Real-time WebSocket connection for live price updates
   const binanceSymbol = getBinanceSymbol(symbol)
@@ -183,7 +189,7 @@ export function AdvancedCandlestickChart({ symbol, timeframe, height = 400 }: Ad
   }
 
   useEffect(() => {
-    if (!chartContainerRef.current || !chartData) return
+    if (!chartContainerRef.current || !chartData || !isMounted) return
 
     // Create chart
     const chart = createChart(chartContainerRef.current, {
@@ -331,6 +337,15 @@ export function AdvancedCandlestickChart({ symbol, timeframe, height = 400 }: Ad
     
     return () => clearInterval(interval)
   }, [chartData, isConnected, binanceSymbol])
+
+  // Don't render until mounted on client side
+  if (!isMounted) {
+    return (
+      <div className="w-full h-full flex items-center justify-center">
+        <div className="text-terminal-muted text-sm">Loading chart...</div>
+      </div>
+    )
+  }
 
   return (
     <div className="w-full h-full">

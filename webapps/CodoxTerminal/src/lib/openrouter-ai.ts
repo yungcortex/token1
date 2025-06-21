@@ -43,7 +43,7 @@ class OpenRouterAI {
 
   constructor() {
     this.config = {
-      apiKey: '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',
+      apiKey: process.env.NEXT_PUBLIC_OPENROUTER_API_KEY || '',
       baseUrl: 'https://openrouter.ai/api/v1',
       model: 'openai/o3-mini' // Latest OpenAI o3 model for superior analysis
     }
