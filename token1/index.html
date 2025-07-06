@@ -510,25 +510,225 @@
             box-shadow: 0 8px 20px rgba(0, 255, 64, 0.4);
         }
 
+
+
         /* Responsive Design */
         @media (max-width: 768px) {
+            .container {
+                padding: 10px;
+            }
+
+            .header {
+                padding: 20px;
+                margin-bottom: 15px;
+            }
+
             .header h1 {
-                font-size: 2rem;
+                font-size: 1.8rem;
+                margin-bottom: 8px;
+            }
+
+            .tagline {
+                font-size: 1rem;
+                margin-bottom: 15px;
+            }
+
+            .codox-logo {
+                width: 80px;
+                height: 80px;
+                margin-bottom: 15px;
+            }
+
+            .terminal-status {
+                padding: 10px;
+                font-size: 0.8rem;
             }
             
+            /* Mobile Navigation */
             .nav-tabs {
-                flex-direction: column;
-                align-items: center;
+                display: grid;
+                grid-template-columns: repeat(3, 1fr);
+                gap: 8px;
+                margin-bottom: 15px;
             }
             
             .nav-tab {
-                width: 100%;
-                max-width: 300px;
+                padding: 10px 8px;
+                font-size: 0.75rem;
                 text-align: center;
+                letter-spacing: 0.5px;
             }
-            
+
+            /* Tab Content */
+            .tab-content {
+                padding: 20px;
+            }
+
+            .tab-content h2 {
+                font-size: 1.4rem;
+                margin-bottom: 15px;
+            }
+
+            /* Quick Stats Mobile */
+            .quick-stats {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 10px;
+                margin: 15px 0;
+            }
+
+            .stat-card {
+                padding: 15px;
+            }
+
+            .stat-value {
+                font-size: 1.5rem;
+                margin-bottom: 8px;
+            }
+
+            .stat-label {
+                font-size: 0.8rem;
+            }
+
+            /* Features Grid Mobile */
+            .features-grid {
+                grid-template-columns: 1fr;
+                gap: 15px;
+                margin: 15px 0;
+            }
+
+            .feature-card {
+                padding: 20px;
+            }
+
+            .feature-card h3 {
+                font-size: 1rem;
+                margin-bottom: 10px;
+            }
+
+            .feature-card p {
+                font-size: 0.85rem;
+            }
+
+            /* Calculator Mobile */
+            .calculator {
+                padding: 20px;
+            }
+
             .calculator-grid {
                 grid-template-columns: 1fr;
+                gap: 15px;
+                margin: 15px 0;
+            }
+
+            .calculate-btn {
+                padding: 12px 25px;
+                font-size: 0.9rem;
+                width: 100%;
+            }
+
+            /* Lottery Mobile */
+            .lottery-pool {
+                padding: 20px;
+                margin: 15px 0;
+            }
+
+            .pool-amount {
+                font-size: 2rem;
+                margin-bottom: 8px;
+            }
+
+            .pool-label {
+                font-size: 1rem;
+                margin-bottom: 15px;
+            }
+
+            .countdown-timer {
+                gap: 10px;
+                margin: 15px 0;
+            }
+
+            .countdown-item {
+                padding: 15px 10px;
+                min-width: 60px;
+            }
+
+            .countdown-number {
+                font-size: 1.4rem;
+                margin-bottom: 3px;
+            }
+
+            .countdown-label {
+                font-size: 0.7rem;
+            }
+
+            .lottery-info {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 10px;
+                margin: 15px 0;
+            }
+
+            .lottery-entry {
+                padding: 15px;
+            }
+
+            .entry-amount {
+                font-size: 1.2rem;
+                margin-bottom: 8px;
+            }
+
+            .entry-label {
+                font-size: 0.8rem;
+            }
+
+            /* Evolution Mobile */
+            .evolution-stages {
+                grid-template-columns: repeat(3, 1fr);
+                gap: 8px;
+                margin: 15px 0;
+            }
+
+            .evolution-stage {
+                padding: 10px;
+            }
+
+            .evolution-stage .time {
+                font-size: 0.7rem;
+                margin-bottom: 3px;
+            }
+
+            .evolution-stage .bonus {
+                font-size: 1rem;
+            }
+
+            /* Terminal Text Mobile */
+            .terminal-text {
+                padding: 15px;
+                font-size: 0.8rem;
+                margin: 15px 0;
+            }
+
+            /* CTA Section Mobile */
+            .cta-section {
+                padding: 25px 15px;
+                margin: 20px 0;
+            }
+
+            .cta-section h2 {
+                font-size: 1.5rem;
+                margin-bottom: 15px;
+            }
+
+            .cta-button {
+                padding: 12px 20px;
+                font-size: 0.9rem;
+                margin: 8px 5px;
+                display: block;
+                width: calc(100% - 10px);
+            }
+
+            /* Matrix Rain Mobile */
+            .matrix-rain {
+                opacity: 0.2;
             }
         }
 
@@ -1034,6 +1234,8 @@ INFECTION COMPLETE ✓
             });
         }
 
+
+
         // Tab switching functionality
         function showTab(tabName) {
             // Hide all tab contents
@@ -1177,6 +1379,8 @@ INFECTION COMPLETE ✓
                 }, 5000); // Update every 5 seconds
             }
         }
+
+
 
         // Initialize page
         document.addEventListener('DOMContentLoaded', function() {
