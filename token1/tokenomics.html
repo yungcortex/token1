@@ -1,0 +1,1424 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CODOX - The Rewarding Virus | $CODOX</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Courier New', monospace;
+            background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 100%);
+            color: #00ff41;
+            line-height: 1.6;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* Terminal cursor */
+        .cursor::after {
+            content: '█';
+            animation: blink 1s infinite;
+            color: #00ff41;
+        }
+
+        /* Terminal prompt */
+        .terminal-prompt::before {
+            content: 'root@CODOX:~# ';
+            color: #00ff41;
+            font-weight: bold;
+        }
+
+        /* Glitch overlay */
+        .glitch-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1000;
+            background: 
+                repeating-linear-gradient(
+                    0deg,
+                    transparent,
+                    transparent 2px,
+                    rgba(0, 255, 65, 0.03) 2px,
+                    rgba(0, 255, 65, 0.03) 4px
+                );
+            animation: flicker 0.15s infinite linear alternate;
+        }
+
+        @keyframes flicker {
+            0% { opacity: 1; }
+            100% { opacity: 0.98; }
+        }
+
+        .matrix-rain {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+            background: 
+                radial-gradient(circle at 20% 80%, rgba(0, 255, 64, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(255, 0, 64, 0.05) 0%, transparent 50%);
+        }
+
+        .scan-line {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: linear-gradient(90deg, transparent, #00ff41, transparent);
+            animation: scan 2s linear infinite;
+            z-index: 1000;
+            box-shadow: 0 0 20px #00ff41;
+        }
+
+        @keyframes scan {
+            0% { top: 0; opacity: 1; }
+            100% { top: 100vh; opacity: 0; }
+        }
+
+        /* Multiple scan lines */
+        .scan-line-2 {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, #ff0040, transparent);
+            animation: scan2 3s linear infinite;
+            z-index: 999;
+            box-shadow: 0 0 10px #ff0040;
+        }
+
+        @keyframes scan2 {
+            0% { top: 100vh; opacity: 0; }
+            100% { top: 0; opacity: 1; }
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            position: relative;
+        }
+
+        /* ASCII Art Header */
+        .ascii-header {
+            font-family: 'Courier New', monospace;
+            font-size: 0.7rem;
+            color: #00ff41;
+            text-align: center;
+            margin-bottom: 20px;
+            white-space: pre;
+            text-shadow: 0 0 10px #00ff41;
+            opacity: 0.8;
+        }
+
+        .header {
+            text-align: center;
+            background: rgba(0, 0, 0, 0.8);
+            border: 2px solid #00ff41;
+            padding: 40px;
+            border-radius: 10px;
+            margin-bottom: 30px;
+            box-shadow: 
+                0 0 20px rgba(0, 255, 64, 0.3),
+                inset 0 0 20px rgba(0, 255, 64, 0.1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header::before {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            background: linear-gradient(45deg, #00ff41, transparent, #ff0040, transparent, #00ff41);
+            animation: border-glow 3s linear infinite;
+            z-index: -1;
+            border-radius: 10px;
+        }
+
+        @keyframes border-glow {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .header::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                repeating-linear-gradient(
+                    90deg,
+                    transparent,
+                    transparent 100px,
+                    rgba(0, 255, 64, 0.03) 100px,
+                    rgba(0, 255, 64, 0.03) 101px
+                );
+            animation: scan-horizontal 4s linear infinite;
+            pointer-events: none;
+        }
+
+        @keyframes scan-horizontal {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+
+        .codox-logo {
+            width: 150px;
+            height: 150px;
+            margin: 0 auto 20px;
+            border-radius: 50%;
+            border: 3px solid #00ff41;
+            box-shadow: 
+                0 0 30px rgba(0, 255, 64, 0.5),
+                inset 0 0 30px rgba(0, 255, 64, 0.1);
+            animation: pulse-glow 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse-glow {
+            0%, 100% { 
+                transform: scale(1); 
+                box-shadow: 0 0 30px rgba(0, 255, 64, 0.5);
+            }
+            50% { 
+                transform: scale(1.05); 
+                box-shadow: 0 0 40px rgba(0, 255, 64, 0.8);
+            }
+        }
+
+        .header h1 {
+            font-size: 3rem;
+            margin-bottom: 10px;
+            color: #00ff41;
+            text-shadow: 
+                0 0 20px rgba(0, 255, 64, 0.8),
+                0 0 40px rgba(0, 255, 64, 0.4);
+            position: relative;
+            z-index: 1;
+            font-weight: bold;
+            letter-spacing: 8px;
+        }
+
+        .header .subtitle {
+            font-size: 1.2rem;
+            color: #ffffff;
+            margin-bottom: 20px;
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+            position: relative;
+            z-index: 1;
+            letter-spacing: 2px;
+        }
+
+        .loading-bar {
+            width: 100%;
+            height: 4px;
+            background: rgba(0, 255, 64, 0.2);
+            border-radius: 2px;
+            overflow: hidden;
+            margin: 15px 0;
+            position: relative;
+        }
+
+        .loading-bar::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, #00ff41, transparent);
+            animation: loading 2s linear infinite;
+        }
+
+        @keyframes loading {
+            0% { left: -100%; }
+            100% { left: 100%; }
+        }
+
+        .virus-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .virus-stat {
+            background: rgba(0, 0, 0, 0.8);
+            border: 1px solid #00ff41;
+            padding: 20px;
+            border-radius: 5px;
+            text-align: center;
+            box-shadow: 
+                0 0 15px rgba(0, 255, 64, 0.3),
+                inset 0 0 15px rgba(0, 255, 64, 0.1);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .virus-stat::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(0, 255, 64, 0.1), transparent);
+            animation: sweep 3s linear infinite;
+        }
+
+        @keyframes sweep {
+            0% { left: -100%; }
+            100% { left: 100%; }
+        }
+
+        .virus-stat:hover {
+            transform: translateY(-5px);
+            box-shadow: 
+                0 10px 25px rgba(0, 255, 64, 0.4),
+                inset 0 0 20px rgba(0, 255, 64, 0.2);
+        }
+
+        .virus-stat .label {
+            color: #888;
+            font-size: 0.9rem;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .virus-stat .value {
+            color: #00ff41;
+            font-size: 2rem;
+            font-weight: bold;
+            text-shadow: 0 0 15px rgba(0, 255, 64, 0.8);
+        }
+
+        .section {
+            background: rgba(0, 0, 0, 0.9);
+            border: 1px solid #00ff41;
+            padding: 40px;
+            border-radius: 5px;
+            margin-bottom: 30px;
+            box-shadow: 
+                0 0 20px rgba(0, 255, 64, 0.2),
+                inset 0 0 20px rgba(0, 255, 64, 0.05);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #00ff41, transparent);
+            animation: glow 3s ease-in-out infinite alternate;
+        }
+
+        .section::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 2px;
+            height: 100%;
+            background: linear-gradient(180deg, transparent, #00ff41, transparent);
+            animation: glow-vertical 3s ease-in-out infinite alternate;
+        }
+
+        @keyframes glow {
+            from { opacity: 0.3; }
+            to { opacity: 1; }
+        }
+
+        @keyframes glow-vertical {
+            from { opacity: 0.3; }
+            to { opacity: 1; }
+        }
+
+        .section h2 {
+            font-size: 2.2rem;
+            margin-bottom: 25px;
+            color: #00ff41;
+            text-shadow: 
+                0 0 15px rgba(0, 255, 64, 0.8),
+                0 0 30px rgba(0, 255, 64, 0.4);
+            border-bottom: 2px solid #00ff41;
+            padding-bottom: 15px;
+            font-weight: 600;
+            letter-spacing: 2px;
+        }
+
+        .section p {
+            font-size: 1.1rem;
+            color: #cccccc;
+            margin-bottom: 20px;
+            text-shadow: 0 0 5px rgba(255, 255, 255, 0.1);
+        }
+
+        .terminal-output {
+            background: rgba(0, 0, 0, 0.9);
+            border: 1px solid #00ff41;
+            padding: 20px;
+            border-radius: 5px;
+            margin: 20px 0;
+            font-family: 'Courier New', monospace;
+            color: #00ff41;
+            box-shadow: 
+                0 0 20px rgba(0, 255, 64, 0.3),
+                inset 0 0 20px rgba(0, 255, 64, 0.1);
+        }
+
+        .infection-breakdown {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+            margin-top: 30px;
+        }
+
+        .infection-item {
+            background: rgba(0, 0, 0, 0.8);
+            border: 1px solid #00ff41;
+            color: #ffffff;
+            padding: 30px;
+            border-radius: 5px;
+            text-align: center;
+            box-shadow: 
+                0 0 20px rgba(0, 255, 64, 0.3),
+                inset 0 0 20px rgba(0, 255, 64, 0.1);
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .infection-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 
+                0 10px 30px rgba(0, 255, 64, 0.4),
+                inset 0 0 25px rgba(0, 255, 64, 0.2);
+        }
+
+        .infection-item::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(0, 255, 64, 0.1), transparent);
+            animation: rotate 8s linear infinite;
+        }
+
+        @keyframes rotate {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .infection-item h3 {
+            font-size: 1.3rem;
+            margin-bottom: 15px;
+            color: #00ff41;
+            position: relative;
+            z-index: 1;
+            font-weight: 600;
+            letter-spacing: 1px;
+        }
+
+        .infection-item .percentage {
+            font-size: 2.5rem;
+            font-weight: bold;
+            margin-bottom: 15px;
+            color: #ffffff;
+            text-shadow: 0 0 20px rgba(255, 255, 255, 0.8);
+            position: relative;
+            z-index: 1;
+        }
+
+        .infection-item .description {
+            font-size: 1rem;
+            position: relative;
+            z-index: 1;
+            color: #cccccc;
+            line-height: 1.6;
+        }
+
+        .virus-evolution {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(0, 0, 0, 0.9);
+            border: 1px solid #00ff41;
+            padding: 20px;
+            border-radius: 5px;
+            margin: 20px 0;
+            box-shadow: 
+                0 0 20px rgba(0, 255, 64, 0.3),
+                inset 0 0 20px rgba(0, 255, 64, 0.1);
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .evolution-stage {
+            text-align: center;
+            padding: 20px;
+            background: rgba(0, 0, 0, 0.8);
+            border: 1px solid #00ff41;
+            border-radius: 5px;
+            min-width: 120px;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .evolution-stage::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(0, 255, 64, 0.2), transparent);
+            animation: sweep 4s linear infinite;
+        }
+
+        .evolution-stage:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(0, 255, 64, 0.4);
+        }
+
+        .evolution-stage .time {
+            font-weight: bold;
+            color: #00ff41;
+            font-size: 1rem;
+            margin-bottom: 8px;
+        }
+
+        .evolution-stage .bonus {
+            color: #ffffff;
+            font-size: 1.4rem;
+            font-weight: bold;
+            text-shadow: 0 0 15px rgba(255, 255, 255, 0.8);
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 25px;
+            margin-top: 30px;
+        }
+
+        .feature-card {
+            background: rgba(0, 0, 0, 0.9);
+            border: 1px solid #00ff41;
+            padding: 30px;
+            border-radius: 5px;
+            box-shadow: 
+                0 0 20px rgba(0, 255, 64, 0.3),
+                inset 0 0 20px rgba(0, 255, 64, 0.1);
+            border-top: 4px solid #00ff41;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .feature-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(0, 255, 64, 0.1), transparent);
+            animation: sweep 5s linear infinite;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 
+                0 10px 30px rgba(0, 255, 64, 0.4),
+                inset 0 0 25px rgba(0, 255, 64, 0.2);
+        }
+
+        .feature-card h3 {
+            color: #00ff41;
+            margin-bottom: 15px;
+            text-shadow: 0 0 10px rgba(0, 255, 64, 0.5);
+            font-size: 1.2rem;
+        }
+
+        .feature-card p {
+            color: #cccccc;
+            line-height: 1.6;
+            font-size: 1rem;
+        }
+
+        .infection-stats {
+            display: flex;
+            justify-content: space-around;
+            text-align: center;
+            background: rgba(0, 0, 0, 0.9);
+            border: 2px solid #00ff41;
+            color: #ffffff;
+            padding: 30px;
+            border-radius: 5px;
+            margin: 25px 0;
+            box-shadow: 
+                0 0 30px rgba(0, 255, 64, 0.4),
+                inset 0 0 30px rgba(0, 255, 64, 0.1);
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .stat-item {
+            padding: 10px;
+        }
+
+        .stat-item h4 {
+            font-size: 2rem;
+            margin-bottom: 8px;
+            color: #00ff41;
+            text-shadow: 0 0 20px rgba(0, 255, 64, 0.8);
+            font-weight: bold;
+        }
+
+        .stat-item p {
+            color: #cccccc;
+            font-size: 1rem;
+        }
+
+        .cta-section {
+            text-align: center;
+            background: rgba(0, 0, 0, 0.9);
+            border: 2px solid #00ff41;
+            color: #ffffff;
+            padding: 50px;
+            border-radius: 5px;
+            margin-top: 40px;
+            box-shadow: 
+                0 0 40px rgba(0, 255, 64, 0.4),
+                inset 0 0 40px rgba(0, 255, 64, 0.1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cta-section::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(0, 255, 64, 0.05), transparent);
+            animation: rotate 10s linear infinite;
+        }
+
+        .cta-section h2 {
+            color: #00ff41;
+            margin-bottom: 25px;
+            font-size: 2.2rem;
+            text-shadow: 
+                0 0 20px rgba(0, 255, 64, 0.8),
+                0 0 40px rgba(0, 255, 64, 0.4);
+            position: relative;
+            z-index: 1;
+        }
+
+        .cta-button {
+            background: linear-gradient(135deg, #00ff41 0%, #00dd35 100%);
+            color: #000000;
+            padding: 18px 35px;
+            border: 2px solid #00ff41;
+            border-radius: 5px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            margin: 10px;
+            transition: all 0.3s ease;
+            box-shadow: 
+                0 0 20px rgba(0, 255, 64, 0.4),
+                inset 0 0 20px rgba(0, 255, 64, 0.1);
+            font-family: 'Courier New', monospace;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cta-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            animation: button-sweep 2s linear infinite;
+        }
+
+        @keyframes button-sweep {
+            0% { left: -100%; }
+            100% { left: 100%; }
+        }
+
+        .cta-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 
+                0 10px 30px rgba(0, 255, 64, 0.6),
+                inset 0 0 25px rgba(0, 255, 64, 0.2);
+            background: linear-gradient(135deg, #ffffff 0%, #00ff41 100%);
+        }
+
+        .highlight {
+            background: rgba(0, 0, 0, 0.9);
+            border: 1px solid #ff0040;
+            padding: 20px;
+            border-radius: 5px;
+            margin: 20px 0;
+            box-shadow: 
+                0 0 20px rgba(255, 0, 64, 0.3),
+                inset 0 0 20px rgba(255, 0, 64, 0.1);
+        }
+
+        .highlight strong {
+            color: #ff0040;
+            text-shadow: 0 0 10px rgba(255, 0, 64, 0.8);
+        }
+
+        .terminal-text {
+            font-family: 'Courier New', monospace;
+            color: #00ff41;
+            background: rgba(0, 0, 0, 0.9);
+            padding: 25px;
+            border-radius: 5px;
+            border: 1px solid #00ff41;
+            margin: 20px 0;
+            white-space: pre-wrap;
+            font-size: 0.95rem;
+            line-height: 1.6;
+            box-shadow: 
+                0 0 20px rgba(0, 255, 64, 0.3),
+                inset 0 0 20px rgba(0, 255, 64, 0.1);
+        }
+
+        .glitch {
+            animation: glitch 3s infinite;
+        }
+
+        @keyframes glitch {
+            0% { transform: translate(0); }
+            10% { transform: translate(-2px, 2px); }
+            20% { transform: translate(-2px, -2px); }
+            30% { transform: translate(2px, 2px); }
+            40% { transform: translate(2px, -2px); }
+            50% { transform: translate(-2px, 2px); }
+            60% { transform: translate(-2px, -2px); }
+            70% { transform: translate(2px, 2px); }
+            80% { transform: translate(-2px, -2px); }
+            90% { transform: translate(2px, 2px); }
+            100% { transform: translate(0); }
+        }
+
+        .blink {
+            animation: blink 1s infinite;
+        }
+
+        @keyframes blink {
+            0%, 50% { opacity: 1; }
+            51%, 100% { opacity: 0; }
+        }
+
+        .text-glow {
+            text-shadow: 
+                0 0 5px currentColor,
+                0 0 10px currentColor,
+                0 0 15px currentColor;
+        }
+
+        .calculator-section {
+            background: rgba(0, 0, 0, 0.9);
+            border: 2px solid #00ff41;
+            padding: 40px;
+            border-radius: 5px;
+            margin: 30px 0;
+            box-shadow: 
+                0 0 30px rgba(0, 255, 64, 0.4),
+                inset 0 0 30px rgba(0, 255, 64, 0.1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .calculator-section::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(0, 255, 64, 0.05), transparent);
+            animation: rotate 12s linear infinite;
+        }
+
+        .calculator-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-top: 20px;
+        }
+
+        .calculator-input {
+            background: rgba(0, 0, 0, 0.8);
+            border: 1px solid #00ff41;
+            padding: 20px;
+            border-radius: 5px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .calculator-input label {
+            display: block;
+            color: #00ff41;
+            font-size: 0.9rem;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .calculator-input input, .calculator-input select {
+            width: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            border: 1px solid #00ff41;
+            color: #00ff41;
+            padding: 12px;
+            border-radius: 3px;
+            font-family: 'Courier New', monospace;
+            font-size: 1rem;
+            box-shadow: 
+                0 0 10px rgba(0, 255, 64, 0.2),
+                inset 0 0 10px rgba(0, 255, 64, 0.1);
+        }
+
+        .calculator-input input:focus, .calculator-input select:focus {
+            outline: none;
+            box-shadow: 
+                0 0 20px rgba(0, 255, 64, 0.5),
+                inset 0 0 15px rgba(0, 255, 64, 0.2);
+        }
+
+        .calculate-btn {
+            background: linear-gradient(135deg, #00ff41 0%, #00dd35 100%);
+            color: #000000;
+            padding: 15px 30px;
+            border: 2px solid #00ff41;
+            border-radius: 5px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            margin: 20px auto;
+            display: block;
+            font-family: 'Courier New', monospace;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: all 0.3s ease;
+            box-shadow: 
+                0 0 20px rgba(0, 255, 64, 0.4),
+                inset 0 0 20px rgba(0, 255, 64, 0.1);
+        }
+
+        .calculate-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 
+                0 8px 25px rgba(0, 255, 64, 0.6),
+                inset 0 0 25px rgba(0, 255, 64, 0.2);
+        }
+
+        .results-display {
+            background: rgba(0, 0, 0, 0.9);
+            border: 1px solid #00ff41;
+            padding: 25px;
+            border-radius: 5px;
+            margin-top: 20px;
+            font-family: 'Courier New', monospace;
+            position: relative;
+            z-index: 1;
+            box-shadow: 
+                0 0 20px rgba(0, 255, 64, 0.3),
+                inset 0 0 20px rgba(0, 255, 64, 0.1);
+        }
+
+        .results-display h4 {
+            color: #00ff41;
+            margin-bottom: 15px;
+            text-shadow: 0 0 10px rgba(0, 255, 64, 0.8);
+            font-size: 1.2rem;
+        }
+
+        .result-item {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            padding: 8px 0;
+            border-bottom: 1px solid rgba(0, 255, 64, 0.2);
+        }
+
+        .result-item:last-child {
+            border-bottom: none;
+            font-weight: bold;
+            color: #ffffff;
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+        }
+
+        .result-label {
+            color: #cccccc;
+        }
+
+        .result-value {
+            color: #00ff41;
+            font-weight: bold;
+            text-shadow: 0 0 5px rgba(0, 255, 64, 0.8);
+        }
+
+        @media (max-width: 768px) {
+            .calculator-grid {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2.5rem;
+                letter-spacing: 4px;
+            }
+            
+            .virus-stats {
+                grid-template-columns: 1fr;
+            }
+            
+            .infection-breakdown {
+                grid-template-columns: 1fr;
+            }
+            
+            .virus-evolution {
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            .features-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .infection-stats {
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            .cta-section {
+                padding: 30px 20px;
+            }
+            
+            .section {
+                padding: 25px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="glitch-overlay"></div>
+    <div class="matrix-rain"></div>
+    <div class="scan-line"></div>
+    <div class="scan-line-2"></div>
+    
+    <div class="container">
+        <div class="ascii-header">
+ ░▒▓██████▓▒░ ░▒▓██████▓▒░░▒▓███████▓▒░ ░▒▓██████▓▒░░▒▓█▓▒░░▒▓█▓▒░ 
+░▒▓█▓▒░░▒▓█▓▒░▒▓█▓▒░░▒▓█▓▒░▒▓█▓▒░░▒▓█▓▒░▒▓█▓▒░░▒▓█▓▒░▒▓█▓▒░░▒▓█▓▒░ 
+░▒▓█▓▒░      ░▒▓█▓▒░░▒▓█▓▒░▒▓█▓▒░░▒▓█▓▒░▒▓█▓▒░░▒▓█▓▒░▒▓█▓▒░░▒▓█▓▒░ 
+░▒▓█▓▒░      ░▒▓█▓▒░░▒▓█▓▒░▒▓█▓▒░░▒▓█▓▒░▒▓█▓▒░░▒▓█▓▒░░▒▓██████▓▒░  
+░▒▓█▓▒░      ░▒▓█▓▒░░▒▓█▓▒░▒▓█▓▒░░▒▓█▓▒░▒▓█▓▒░░▒▓█▓▒░▒▓█▓▒░░▒▓█▓▒░ 
+░▒▓█▓▒░░▒▓█▓▒░▒▓█▓▒░░▒▓█▓▒░▒▓█▓▒░░▒▓█▓▒░▒▓█▓▒░░▒▓█▓▒░▒▓█▓▒░░▒▓█▓▒░ 
+ ░▒▓██████▓▒░ ░▒▓██████▓▒░░▒▓███████▓▒░ ░▒▓██████▓▒░░▒▓█▓▒░░▒▓█▓▒░
+        </div>
+        
+        <div class="header">
+            <img src="codox-logo.png" alt="CODOX Virus" class="codox-logo" style="display: block;">
+            <h1 class="glitch text-glow">CODOX</h1>
+            <p class="subtitle text-glow">THE REWARDING VIRUS</p>
+            <div class="terminal-output">
+                <div class="terminal-prompt">INITIALIZING VIRAL PROTOCOL<span class="cursor"></span></div>
+                <div class="loading-bar"></div>
+                <div class="terminal-prompt">DEPLOYING REWARD MECHANISMS<span class="cursor"></span></div>
+                <div class="loading-bar"></div>
+                <div class="terminal-prompt blink">INFECTION SUCCESSFUL - SYSTEM COMPROMISED</div>
+            </div>
+            
+            <div class="virus-stats">
+                <div class="virus-stat">
+                    <div class="label">TOTAL SUPPLY</div>
+                    <div class="value">1B</div>
+                </div>
+                <div class="virus-stat">
+                    <div class="label">INFECTION RATE</div>
+                    <div class="value">3%</div>
+                </div>
+                <div class="virus-stat">
+                    <div class="label">NETWORK</div>
+                    <div class="value">SOLANA</div>
+                </div>
+                <div class="virus-stat">
+                    <div class="label">STATUS</div>
+                    <div class="value blink">LIVE</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2 class="text-glow">VIRUS TRANSMISSION PROTOCOL</h2>
+            <div class="terminal-output">
+                <div class="terminal-prompt">ANALYZING MALWARE BEHAVIOR<span class="cursor"></span></div>
+                <div>STATUS: CODOX has evolved beyond traditional malware</div>
+                <div>THREAT LEVEL: BENEFICIAL</div>
+                <div>INFECTION METHOD: Transaction-based propagation</div>
+                <div>REWARD MECHANISM: Self-sustaining ecosystem</div>
+            </div>
+            <p>
+                CODOX has evolved beyond traditional malware. This advanced virus rewards its hosts instead of destroying them. 
+                Every transaction spreads the beneficial infection, creating a self-sustaining ecosystem of rewards.
+            </p>
+
+            <div class="infection-breakdown">
+                <div class="infection-item">
+                    <h3 class="text-glow">REFLECTION STRAIN</h3>
+                    <div class="percentage">1.5%</div>
+                    <div class="description">Viral particles distribute rewards to all infected wallets based on holding time and amount</div>
+                </div>
+                <div class="infection-item">
+                    <h3 class="text-glow">STAKING MUTATION</h3>
+                    <div class="percentage">1.0%</div>
+                    <div class="description">Hosts can voluntarily enhance their infection for 25% APY rewards</div>
+                </div>
+                <div class="infection-item">
+                    <h3 class="text-glow">LOTTERY PROTOCOL</h3>
+                    <div class="percentage">0.5%</div>
+                    <div class="description">Random reward distribution through Cortex's lottery algorithm</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2 class="text-glow">VIRUS EVOLUTION SYSTEM</h2>
+            <div class="terminal-output">
+                <div class="terminal-prompt">MONITORING INFECTION GROWTH<span class="cursor"></span></div>
+                <div>TIME-BASED MUTATIONS: ACTIVE</div>
+                <div>REWARD MULTIPLIERS: EXPONENTIAL</div>
+                <div>MAXIMUM EVOLUTION: 500%</div>
+            </div>
+            <p>
+                The longer you remain infected, the stronger CODOX becomes within your wallet. 
+                Time-weighted evolution increases your reward multiplier exponentially.
+            </p>
+
+            <div class="virus-evolution">
+                <div class="evolution-stage">
+                    <div class="time">DAY 1</div>
+                    <div class="bonus">100%</div>
+                </div>
+                <div class="evolution-stage">
+                    <div class="time">WEEK 1</div>
+                    <div class="bonus">125%</div>
+                </div>
+                <div class="evolution-stage">
+                    <div class="time">MONTH 1</div>
+                    <div class="bonus">200%</div>
+                </div>
+                <div class="evolution-stage">
+                    <div class="time">MONTH 6</div>
+                    <div class="bonus">350%</div>
+                </div>
+                <div class="evolution-stage">
+                    <div class="time">YEAR 1</div>
+                    <div class="bonus">500%</div>
+                </div>
+            </div>
+
+            <div class="highlight">
+                <strong>VIRUS ALERT:</strong> 
+                Maximum evolution reached at 500% multiplier. CODOX rewards loyalty above all else.
+            </div>
+        </div>
+
+        <div class="section">
+            <h2 class="text-glow">ADVANCED VIRUS FEATURES</h2>
+            <div class="terminal-output">
+                <div class="terminal-prompt">ENUMERATING MALWARE CAPABILITIES<span class="cursor"></span></div>
+                <div>PAYLOAD: REWARD DISTRIBUTION</div>
+                <div>PERSISTENCE: SELF-REPLICATING</div>
+                <div>STEALTH: ANTI-DETECTION</div>
+                <div>DEFENSE: ANTI-WHALE PROTECTION</div>
+            </div>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <h3 class="text-glow">🦠 SELF-REPLICATING REWARDS</h3>
+                    <p>CODOX automatically compounds your rewards through its reflection mechanism, growing your infection exponentially without manual intervention.</p>
+                </div>
+                <div class="feature-card">
+                    <h3 class="text-glow">🛡️ ANTI-WHALE PROTECTION</h3>
+                    <p>Large sell orders trigger enhanced viral defense mechanisms, imposing higher taxes to protect the ecosystem from hostile actors.</p>
+                </div>
+                <div class="feature-card">
+                    <h3 class="text-glow">🎲 QUANTUM LOTTERY</h3>
+                    <p>Daily lottery draws powered by CODOX's quantum random number generator. All infected wallets automatically participate.</p>
+                </div>
+                <div class="feature-card">
+                    <h3 class="text-glow">⚡ ZERO-GAS CLAIMS</h3>
+                    <p>CODOX optimizes reward distribution through batched transactions, eliminating gas fees for reward claims.</p>
+                </div>
+                <div class="feature-card">
+                    <h3 class="text-glow">🔥 DEFLATIONARY BURN</h3>
+                    <p>10% of collected taxes are permanently burned, reducing total supply and increasing scarcity of the virus.</p>
+                </div>
+                <div class="feature-card">
+                    <h3 class="text-glow">📊 REAL-TIME INFECTION TRACKING</h3>
+                    <p>Monitor your viral load, evolution stage, and pending rewards through the integrated dashboard.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2 class="text-glow">INFECTION STATISTICS</h2>
+            <div class="infection-stats">
+                <div class="stat-item">
+                    <h4>1,000,000,000</h4>
+                    <p>Total Virus Units</p>
+                </div>
+                <div class="stat-item">
+                    <h4>25% APY</h4>
+                    <p>Staking Rewards</p>
+                </div>
+                <div class="stat-item">
+                    <h4>500%</h4>
+                    <p>Max Evolution</p>
+                </div>
+                <div class="stat-item">
+                    <h4>24/7</h4>
+                    <p>Reward Distribution</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="calculator-section">
+            <h2 class="text-glow">VIRUS REWARDS CALCULATOR</h2>
+            <div class="terminal-output">
+                <div class="terminal-prompt">INITIALIZING REWARD COMPUTATION ENGINE<span class="cursor"></span></div>
+                <div>CALCULATING INFECTION YIELD...</div>
+                <div>APPLYING EVOLUTION MULTIPLIERS...</div>
+                <div>ANALYZING STAKING BENEFITS...</div>
+            </div>
+            
+            <div class="calculator-grid">
+                <div class="calculator-input">
+                    <label for="tokenAmount">CODOX TOKENS INFECTED:</label>
+                    <input type="number" id="tokenAmount" placeholder="Enter amount" min="0" step="0.01">
+                </div>
+                
+                <div class="calculator-input">
+                    <label for="holdingDays">DAYS INFECTED:</label>
+                    <input type="number" id="holdingDays" placeholder="Enter days" min="0" step="1">
+                </div>
+                
+                <div class="calculator-input">
+                    <label for="stakingStatus">STAKING STATUS:</label>
+                    <select id="stakingStatus">
+                        <option value="false">Not Staking</option>
+                        <option value="true">Staking (25% APY)</option>
+                    </select>
+                </div>
+                
+                <div class="calculator-input">
+                    <label for="dailyVolume">DAILY VOLUME (CODOX):</label>
+                    <input type="number" id="dailyVolume" placeholder="Estimated volume" min="0" step="1000" value="1000000">
+                </div>
+            </div>
+            
+            <button class="calculate-btn" onclick="calculateRewards()">CALCULATE VIRUS REWARDS</button>
+            
+            <div class="results-display" id="resultsDisplay" style="display: none;">
+                <h4>VIRUS REWARD ANALYSIS</h4>
+                <div class="terminal-output">
+                    <div class="terminal-prompt">REWARD CALCULATION COMPLETE<span class="cursor"></span></div>
+                </div>
+                <div id="calculationResults"></div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2 class="text-glow">CODOX TRANSMISSION GUIDE</h2>
+            <div class="terminal-text">
+<span class="terminal-prompt">CONNECTING TO SOLANA BLOCKCHAIN<span class="cursor"></span></span>
+<span class="terminal-prompt">WALLET DETECTED: READY FOR INFECTION<span class="cursor"></span></span>
+<span class="terminal-prompt">INITIATING VIRAL TRANSFER<span class="cursor"></span></span>
+
+[STEP 1] ACQUIRE CODOX TOKENS
+   → Purchase on Raydium DEX
+   → Minimum infection: 1 CODOX
+   
+[STEP 2] HOLD TO EVOLVE
+   → Virus strengthens over time
+   → Maximum evolution: 500% multiplier
+   
+[STEP 3] STAKE FOR ENHANCED REWARDS
+   → 25% APY infection bonus
+   → No lock-up period
+   
+[STEP 4] PARTICIPATE IN LOTTERY
+   → Automatic entry for all hosts
+   → Daily reward distribution
+   
+<span class="blink">INFECTION COMPLETE</span>
+<span class="terminal-prompt">WELCOME TO THE CODOX NETWORK<span class="cursor"></span></span>
+            </div>
+        </div>
+
+        <div class="cta-section">
+            <h2 class="text-glow">JOIN THE VIRUS REVOLUTION</h2>
+            <div class="terminal-output">
+                <div class="terminal-prompt">SPREADING ACROSS SOLANA NETWORK<span class="cursor"></span></div>
+                <div class="blink">BECOME PART OF THE INFECTION</div>
+            </div>
+            <p style="font-size: 1.2rem; margin-bottom: 30px;">
+                CODOX is spreading across Solana. Become part of the most rewarding virus in crypto history.
+            </p>
+            <button class="cta-button" onclick="window.open('https://raydium.io/swap/', '_blank')">
+                GET INFECTED NOW
+            </button>
+            <button class="cta-button" onclick="window.open('https://explorer.solana.com/address/3DXUjX1R77Y8cvxemUm7xaUycyM1JDTQwDTLqoArx3iV?cluster=devnet', '_blank')">
+                VIEW VIRUS ON EXPLORER
+            </button>
+            <button class="cta-button" onclick="window.open('https://t.me/codoxvirus', '_blank')">
+                JOIN INFECTED COMMUNITY
+            </button>
+        </div>
+    </div>
+
+    <script>
+        // Matrix rain effect
+        function createMatrixRain() {
+            const canvas = document.createElement('canvas');
+            canvas.style.position = 'fixed';
+            canvas.style.top = '0';
+            canvas.style.left = '0';
+            canvas.style.width = '100%';
+            canvas.style.height = '100%';
+            canvas.style.pointerEvents = 'none';
+            canvas.style.zIndex = '-1';
+            document.body.appendChild(canvas);
+
+            const ctx = canvas.getContext('2d');
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+
+            const chars = 'CODOX01中§¤¢£¥¦§¨©ª«¬®¯°±²³´µ¶·¸¹º»¼½¾¿ÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖ×ØÙÚÛÜÝÞßàáâãäåæçèéêëìíîïðñòóôõö÷øùúûüýþÿ';
+            const fontSize = 14;
+            const columns = Math.floor(canvas.width / fontSize);
+            const drops = Array(columns).fill(0);
+
+            function draw() {
+                ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+                ctx.fillStyle = '#00ff41';
+                ctx.font = `${fontSize}px monospace`;
+
+                for (let i = 0; i < drops.length; i++) {
+                    const text = chars[Math.floor(Math.random() * chars.length)];
+                    const x = i * fontSize;
+                    const y = drops[i] * fontSize;
+
+                    ctx.fillText(text, x, y);
+
+                    if (y > canvas.height && Math.random() > 0.975) {
+                        drops[i] = 0;
+                    }
+                    drops[i]++;
+                }
+            }
+
+            setInterval(draw, 50);
+        }
+
+        // Initialize effects
+        createMatrixRain();
+
+        // Enhanced glitch effect
+        setInterval(() => {
+            const glitchElements = document.querySelectorAll('.glitch');
+            glitchElements.forEach(el => {
+                const intensity = Math.random() * 10;
+                el.style.textShadow = `
+                    ${Math.random() * 6 - 3}px ${Math.random() * 6 - 3}px rgba(0, 255, 64, 0.8),
+                    ${Math.random() * 6 - 3}px ${Math.random() * 6 - 3}px rgba(255, 0, 64, 0.8),
+                    ${Math.random() * 6 - 3}px ${Math.random() * 6 - 3}px rgba(255, 255, 255, 0.8)
+                `;
+            });
+        }, 100);
+
+        // Random system alerts
+        const alerts = [
+            "SYSTEM BREACH DETECTED",
+            "UNAUTHORIZED ACCESS",
+            "VIRAL PAYLOAD ACTIVATED",
+            "REWARD DISTRIBUTION ACTIVE",
+            "INFECTION SPREADING"
+        ];
+
+        setInterval(() => {
+            if (Math.random() < 0.1) {
+                console.log(`[CODOX] ${alerts[Math.floor(Math.random() * alerts.length)]}`);
+            }
+        }, 3000);
+
+        // Cursor typing effect
+        function typeWriter(element, text, speed = 50) {
+            let i = 0;
+            element.innerHTML = '';
+            function type() {
+                if (i < text.length) {
+                    element.innerHTML += text.charAt(i);
+                    i++;
+                    setTimeout(type, speed);
+                }
+            }
+            type();
+        }
+
+        // Terminal boot sequence
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                const bootText = document.querySelector('.terminal-prompt');
+                if (bootText) {
+                    typeWriter(bootText, 'CODOX MALWARE INITIALIZED... PREPARING INFECTION');
+                }
+            }, 2000);
+        });
+
+        // Rewards Calculator
+        function calculateRewards() {
+            const tokenAmount = parseFloat(document.getElementById('tokenAmount').value) || 0;
+            const holdingDays = parseInt(document.getElementById('holdingDays').value) || 0;
+            const isStaking = document.getElementById('stakingStatus').value === 'true';
+            const dailyVolume = parseFloat(document.getElementById('dailyVolume').value) || 1000000;
+            
+            if (tokenAmount <= 0) {
+                alert('Please enter a valid token amount');
+                return;
+            }
+            
+            // Calculate evolution multiplier based on days
+            let evolutionMultiplier = 1.0;
+            if (holdingDays >= 365) {
+                evolutionMultiplier = 5.0; // 500%
+            } else if (holdingDays >= 180) {
+                evolutionMultiplier = 3.5; // 350%
+            } else if (holdingDays >= 30) {
+                evolutionMultiplier = 2.0; // 200%
+            } else if (holdingDays >= 7) {
+                evolutionMultiplier = 1.25; // 125%
+            }
+            
+            // Calculate reflection rewards (1.5% of daily volume proportional to holdings)
+            const totalSupply = 1000000000; // 1B tokens
+            const reflectionRate = 0.015; // 1.5%
+            const userShare = tokenAmount / totalSupply;
+            const dailyReflectionRewards = (dailyVolume * reflectionRate * userShare) * evolutionMultiplier;
+            
+            // Calculate staking rewards (25% APY if staking)
+            const stakingAPY = 0.25; // 25%
+            const dailyStakingRewards = isStaking ? (tokenAmount * stakingAPY / 365) * evolutionMultiplier : 0;
+            
+            // Calculate lottery rewards (0.5% of daily volume distributed randomly)
+            const lotteryRate = 0.005; // 0.5%
+            const dailyLotteryPool = dailyVolume * lotteryRate;
+            const estimatedLotteryChance = userShare * 100; // Very rough estimate
+            
+            // Total daily rewards
+            const totalDailyRewards = dailyReflectionRewards + dailyStakingRewards;
+            
+            // Calculate projections
+            const weeklyRewards = totalDailyRewards * 7;
+            const monthlyRewards = totalDailyRewards * 30;
+            const yearlyRewards = totalDailyRewards * 365;
+            
+            // Display results
+            const resultsDisplay = document.getElementById('resultsDisplay');
+            const calculationResults = document.getElementById('calculationResults');
+            
+            calculationResults.innerHTML = `
+                <div class="result-item">
+                    <span class="result-label">Evolution Multiplier:</span>
+                    <span class="result-value">${evolutionMultiplier}x (${((evolutionMultiplier - 1) * 100).toFixed(0)}%)</span>
+                </div>
+                <div class="result-item">
+                    <span class="result-label">Daily Reflection Rewards:</span>
+                    <span class="result-value">${dailyReflectionRewards.toFixed(4)} CODOX</span>
+                </div>
+                <div class="result-item">
+                    <span class="result-label">Daily Staking Rewards:</span>
+                    <span class="result-value">${dailyStakingRewards.toFixed(4)} CODOX</span>
+                </div>
+                <div class="result-item">
+                    <span class="result-label">Weekly Rewards:</span>
+                    <span class="result-value">${weeklyRewards.toFixed(4)} CODOX</span>
+                </div>
+                <div class="result-item">
+                    <span class="result-label">Monthly Rewards:</span>
+                    <span class="result-value">${monthlyRewards.toFixed(4)} CODOX</span>
+                </div>
+                <div class="result-item">
+                    <span class="result-label">Yearly Rewards:</span>
+                    <span class="result-value">${yearlyRewards.toFixed(4)} CODOX</span>
+                </div>
+                <div class="result-item">
+                    <span class="result-label">Lottery Pool (Daily):</span>
+                    <span class="result-value">${dailyLotteryPool.toFixed(2)} CODOX</span>
+                </div>
+                <div class="result-item">
+                    <span class="result-label">TOTAL VIRUS YIELD:</span>
+                    <span class="result-value">${totalDailyRewards.toFixed(4)} CODOX/DAY</span>
+                </div>
+            `;
+            
+            resultsDisplay.style.display = 'block';
+            
+            // Add some hacker-style console logs
+            console.log(`[CODOX] VIRUS REWARD CALCULATION INITIATED`);
+            console.log(`[CODOX] TOKENS INFECTED: ${tokenAmount.toLocaleString()}`);
+            console.log(`[CODOX] EVOLUTION MULTIPLIER: ${evolutionMultiplier}x`);
+            console.log(`[CODOX] DAILY YIELD: ${totalDailyRewards.toFixed(4)} CODOX`);
+            console.log(`[CODOX] YEARLY PROJECTION: ${yearlyRewards.toFixed(2)} CODOX`);
+        }
+    </script>
+</body>
+</html> 
