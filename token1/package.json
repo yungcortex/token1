@@ -1,0 +1,56 @@
+{
+  "name": "codox-solana",
+  "version": "1.0.0",
+  "description": "Advanced Codox token with multiple reward mechanisms for Solana blockchain",
+  "main": "deploy.js",
+  "scripts": {
+    "build": "cargo build-bpf",
+    "build-release": "cargo build-bpf --release",
+    "deploy": "node deploy.js",
+    "deploy-testnet": "SOLANA_NETWORK=devnet node deploy.js",
+    "test": "cargo test",
+    "verify": "solana program show",
+    "start-local": "solana-test-validator",
+    "airdrop": "solana airdrop 2",
+    "balance": "solana balance",
+    "setup-testnet": "solana config set --url https://api.devnet.solana.com",
+    "setup-mainnet": "solana config set --url https://api.mainnet-beta.solana.com",
+    "view-tokenomics": "open tokenomics.html",
+    "jupiter-test": "node -e \"const JupiterIntegration = require('./jupiter-integration.js'); const j = new JupiterIntegration(); j.getTokenList().then(console.log).catch(console.error);\"",
+    "test-token": "node test-token.js",
+    "view-explorer": "open https://explorer.solana.com/address/3DXUjX1R77Y8cvxemUm7xaUycyM1JDTQwDTLqoArx3iV?cluster=devnet"
+  },
+  "keywords": [
+    "solana",
+    "codox",
+    "defi",
+    "raydium",
+    "reflection",
+    "staking",
+    "rewards"
+  ],
+  "author": "Codox Team",
+  "license": "MIT",
+  "dependencies": {
+    "@solana/spl-token": "^0.3.9",
+    "@solana/web3.js": "^1.87.6",
+    "bn.js": "^5.2.1",
+    "borsh": "^0.7.0",
+    "node-fetch": "^2.7.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.10.5",
+    "typescript": "^5.3.3"
+  },
+  "engines": {
+    "node": ">=16.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/tax-token/solana-tax-token"
+  },
+  "bugs": {
+    "url": "https://github.com/tax-token/solana-tax-token/issues"
+  },
+  "homepage": "https://github.com/tax-token/solana-tax-token#readme"
+}

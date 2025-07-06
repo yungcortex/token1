@@ -1,0 +1,33 @@
+{
+  "deployment": {
+    "network": "Solana Mainnet",
+    "timestamp": "2025-07-06T17:32:57.299Z",
+    "deployer": "AaoYr9YeV9HeHWu1a9Z7mf687kpNqZEC8aFiAWmufaxU"
+  },
+  "token": {
+    "name": "Codox",
+    "symbol": "CODOX",
+    "decimals": 9,
+    "totalSupply": 1000000000,
+    "mintAddress": "3DXUjX1R77Y8cvxemUm7xaUycyM1JDTQwDTLqoArx3iV",
+    "tokenAccount": "4gTwMLA9jv1KppYqikiWMube2ux5CsybZ1bk9EtYQRN5"
+  },
+  "taxMechanics": {
+    "totalTaxRate": 3,
+    "reflectionRate": 1.5,
+    "stakingRate": 1,
+    "lotteryRate": 0.5
+  },
+  "liquidity": {
+    "initialTokens": 100000000,
+    "initialSol": 10,
+    "platform": "Raydium"
+  },
+  "nextSteps": [
+    "1. Complete Raydium pool setup at https://raydium.io/pool/",
+    "2. Add initial liquidity",
+    "3. Verify contract on Solana Explorer",
+    "4. Update tokenomics page with live data",
+    "5. Launch marketing campaign"
+  ]
+}

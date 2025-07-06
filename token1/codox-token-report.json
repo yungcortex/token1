@@ -1,0 +1,29 @@
+{
+  "token": {
+    "name": "Codox",
+    "symbol": "CODOX",
+    "mint": "3DXUjX1R77Y8cvxemUm7xaUycyM1JDTQwDTLqoArx3iV",
+    "network": "Solana Devnet",
+    "decimals": 9,
+    "totalSupply": "1000000000000000000",
+    "currentSupply": "1,000,000,000"
+  },
+  "deployment": {
+    "deployer": "AaoYr9YeV9HeHWu1a9Z7mf687kpNqZEC8aFiAWmufaxU",
+    "deployerTokenAccount": "4gTwMLA9jv1KppYqikiWMube2ux5CsybZ1bk9EtYQRN5",
+    "deployerBalance": "1,000,000,000"
+  },
+  "features": {
+    "taxSystem": "3% transaction tax",
+    "reflectionRewards": "1.5% for holders",
+    "stakingRewards": "1% for stakers",
+    "lotterySystem": "0.5% for daily lottery",
+    "antiWhaleProtection": "Higher taxes on large sells",
+    "timeWeightedRewards": "Up to 500% multiplier"
+  },
+  "links": {
+    "explorerMint": "https://explorer.solana.com/address/3DXUjX1R77Y8cvxemUm7xaUycyM1JDTQwDTLqoArx3iV?cluster=devnet",
+    "explorerAccount": "https://explorer.solana.com/address/4gTwMLA9jv1KppYqikiWMube2ux5CsybZ1bk9EtYQRN5?cluster=devnet",
+    "jupiterTrade": "https://jup.ag/swap/3DXUjX1R77Y8cvxemUm7xaUycyM1JDTQwDTLqoArx3iV?inputMint=So11111111111111111111111111111111111111112&outputMint=3DXUjX1R77Y8cvxemUm7xaUycyM1JDTQwDTLqoArx3iV&amount=1000000000&slippageBps=50&referral=CodoxToken"
+  }
+}
