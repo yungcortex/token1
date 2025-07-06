@@ -37,10 +37,10 @@ module.exports = {
     
     // Tax Configuration
     tax: {
-        totalRate: 300, // 3% in basis points
-        reflectionRate: 150, // 1.5%
-        stakingRate: 100, // 1%
-        lotteryRate: 50, // 0.5%
+        totalRate: 500, // 5% in basis points
+        reflectionRate: 250, // 2.5%
+        stakingRate: 150, // 1.5%
+        lotteryRate: 100, // 1.0%
     },
     
     // Raydium Configuration
