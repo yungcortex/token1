@@ -17,6 +17,19 @@
             color: #00ff41;
             line-height: 1.6;
             overflow-x: hidden;
+            position: relative;
+        }
+
+        /* Subtle Matrix Rain Background */
+        .matrix-rain {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+            opacity: 0.15;
         }
 
         .container {
@@ -566,6 +579,7 @@
     </style>
 </head>
 <body>
+    <canvas class="matrix-rain" id="matrixCanvas"></canvas>
     <div class="container">
         <div class="header">
             <img src="codox-logo-small.png" alt="CODOX Logo" class="codox-logo">
@@ -760,6 +774,56 @@ INFECTION COMPLETE ✓
     </div>
 
     <script>
+        // Subtle Matrix Rain Effect
+        function createMatrixRain() {
+            const canvas = document.getElementById('matrixCanvas');
+            const ctx = canvas.getContext('2d');
+            
+            // Set canvas size
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+            
+            // Characters for the matrix rain
+            const chars = 'CODOX01${}[]()';
+            const fontSize = 12;
+            const columns = Math.floor(canvas.width / fontSize);
+            const drops = Array(columns).fill(0);
+            
+            function draw() {
+                // Create subtle fade effect
+                ctx.fillStyle = 'rgba(0, 0, 0, 0.03)';
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+                
+                // Set text properties
+                ctx.fillStyle = '#00ff41';
+                ctx.font = `${fontSize}px 'Courier New', monospace`;
+                
+                // Draw the characters
+                for (let i = 0; i < drops.length; i++) {
+                    const text = chars[Math.floor(Math.random() * chars.length)];
+                    const x = i * fontSize;
+                    const y = drops[i] * fontSize;
+                    
+                    ctx.fillText(text, x, y);
+                    
+                    // Reset drop randomly
+                    if (y > canvas.height && Math.random() > 0.98) {
+                        drops[i] = 0;
+                    }
+                    drops[i]++;
+                }
+            }
+            
+            // Start the animation
+            setInterval(draw, 120); // Slower animation for subtlety
+            
+            // Resize handler
+            window.addEventListener('resize', () => {
+                canvas.width = window.innerWidth;
+                canvas.height = window.innerHeight;
+            });
+        }
+
         // Tab switching functionality
         function showTab(tabName) {
             // Hide all tab contents
@@ -855,6 +919,9 @@ INFECTION COMPLETE ✓
 
         // Initialize page
         document.addEventListener('DOMContentLoaded', function() {
+            // Initialize matrix rain effect
+            createMatrixRain();
+            
             // Add some interactive effects
             const statCards = document.querySelectorAll('.stat-card');
             statCards.forEach(card => {
